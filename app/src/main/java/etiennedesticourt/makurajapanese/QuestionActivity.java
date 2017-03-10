@@ -33,6 +33,15 @@ public class QuestionActivity extends AppCompatActivity {
         displayQuestion();
     }
 
+    public void nextQuestion(View v) {
+        if (currentQuestionId + 1 >= lesson.getNumQuestions()) {
+            //TODO: Switch to next activity;
+            return;
+        }
+        currentQuestionId += 1;
+        displayQuestion();
+    }
+
     private void displayQuestion() {
         Question question = lesson.getQuestion(currentQuestionId);
         binding.setQuestion(question);
@@ -58,6 +67,26 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     public void validateAnswer(View v) {
+        String given = answerFragment.getAnswer();
+        String actual = lesson.getQuestion(currentQuestionId).getAnswer();
+        if (given.equals(actual)) {
+            correctAnswer();
+        }
+        else {
+            incorrectAnswer();
+        }
+    }
+
+    private void correctAnswer(){
+        View layout = findViewById(R.id.answerValidationLayout);
+        layout.setVisibility(View.VISIBLE);
+        layout.setBackgroundResource(R.color.colorQuestionCorrectAnswerBackground);
+    }
+
+    private void incorrectAnswer() {
+        View layout = findViewById(R.id.answerValidationLayout);
+        layout.setVisibility(View.VISIBLE);
+        layout.setBackgroundResource(R.color.colorQuestionIncorrectAnswerBackground);
     }
 
     // 5 parts:

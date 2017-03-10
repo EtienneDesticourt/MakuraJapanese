@@ -39,4 +39,8 @@ public class Lesson implements Serializable{
     public String getName() {
         return "Lesson " + String.valueOf(id);
     }
+
+    public int getNumQuestions() {
+        return questions.size();
+    }
 }
