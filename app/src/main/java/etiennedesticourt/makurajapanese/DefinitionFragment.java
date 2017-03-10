@@ -11,6 +11,8 @@ import etiennedesticourt.makurajapanese.databinding.FragmentQuestionDefinitionBi
 
 public class DefinitionFragment extends AnswerFragment {
     private static final String IMAGE_FOLDER = "drawable";
+    private int selectedOption = -1;
+    private int selectedId = -1;
 
     @Override
     public View bind(LayoutInflater inflater, ViewGroup container) {
@@ -25,6 +27,26 @@ public class DefinitionFragment extends AnswerFragment {
         setOptionImage(root, R.id.image4, 3);
 
         return root;
+    }
+
+    @Override
+    public String getAnswer() {
+        if (selectedOption == -1) {
+            return "";
+        }
+        DefinitionQuestion question = (DefinitionQuestion) getQuestion();
+        return question.getOption(selectedOption);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (selectedId != -1) {
+            View previouslySelected = getView().findViewById(selectedId);
+            previouslySelected.setSelected(false);
+        }
+        selectedOption = Integer.valueOf((String) v.getTag());
+        selectedId = v.getId();
+        v.setSelected(true);
     }
 
     private void setOptionImage(View rootView, int viewId, int imageId) {

@@ -18,6 +18,7 @@ public class QuestionActivity extends AppCompatActivity {
     public static final String INTENT_LESSON_TAG = "lesson";
     private Lesson lesson;
     private int currentQuestionId = 0;
+    private AnswerFragment answerFragment;
     ActivityQuestionBinding binding;
 
     @Override
@@ -36,7 +37,6 @@ public class QuestionActivity extends AppCompatActivity {
         Question question = lesson.getQuestion(currentQuestionId);
         binding.setQuestion(question);
 
-        Fragment answerFragment;
         if (question.getType() == QuestionType.WORD_DEFINITION) {
             answerFragment = new DefinitionFragment();
         }
@@ -51,6 +51,10 @@ public class QuestionActivity extends AppCompatActivity {
         answerFragment.setArguments(bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.fragmentLayout, answerFragment).commit();
+    }
+
+    public void onClickFragment(View v) {
+        answerFragment.onClick(v);
     }
 
     public void validateAnswer(View v) {

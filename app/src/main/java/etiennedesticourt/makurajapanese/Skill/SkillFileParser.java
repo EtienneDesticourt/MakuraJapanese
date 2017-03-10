@@ -28,6 +28,7 @@ public class SkillFileParser {
     private static final String QUESTION_OPTION_TAG = "option";
     private static final String QUESTION_OPTION_IMAGE_TAG = "image";
     private static final String QUESTION_OPTION_TEXT_TAG = "text";
+    private static final int NUM_DEFINITION_OPTIONS = 4;
 
     public static Skill parseSkillFile(InputStream skill) throws SkillFileParserException {
         Document doc;
@@ -120,6 +121,9 @@ public class SkillFileParser {
                 options.add(option);
                 images.add(imageName);
             }
+        }
+        if (options.size() != NUM_DEFINITION_OPTIONS || images.size() != NUM_DEFINITION_OPTIONS) {
+            throw new SkillFileParserException("Definition question does not have the right number of options.");
         }
         return new DefinitionQuestion(options,images, sentence, answer);
     }

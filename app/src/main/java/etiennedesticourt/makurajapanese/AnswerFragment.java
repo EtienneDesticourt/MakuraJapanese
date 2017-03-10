@@ -22,6 +22,10 @@ public abstract class AnswerFragment extends Fragment {
 
     public abstract View bind(LayoutInflater inflater, ViewGroup container);
 
+    public abstract String getAnswer();
+
+    public abstract void onClick(View v);
+
     public Question getQuestion() {
         return question;
     }
