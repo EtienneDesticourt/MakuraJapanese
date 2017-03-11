@@ -4,16 +4,19 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class TranslationFragment extends AnswerFragment {
     @Override
     public View bind(LayoutInflater inflater, ViewGroup container) {
-        return null;
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_question_translation, container, false);
+        return rootView;
     }
 
     @Override
     public String getAnswer() {
-        return null;
+        EditText view = (EditText) getView().findViewById(R.id.answerField);
+        return view.getText().toString();
     }
 
     @Override
