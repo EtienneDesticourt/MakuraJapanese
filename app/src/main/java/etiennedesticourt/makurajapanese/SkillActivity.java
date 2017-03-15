@@ -75,6 +75,7 @@ public class SkillActivity extends AppCompatActivity {
         Lesson lesson = skill.getLesson(lessonIndex);
         Intent intent = new Intent(this, QuestionActivity.class);
         intent.putExtra(QuestionActivity.INTENT_LESSON_TAG, lesson);
+        intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         startActivity(intent);
     }
 }

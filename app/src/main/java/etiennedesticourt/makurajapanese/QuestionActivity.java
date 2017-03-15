@@ -43,12 +43,30 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void nextQuestion() {
         if (currentQuestionId + 1 >= lesson.getNumQuestions()) {
-            //TODO: Switch to next activity;
+            startLessonEndActivity();
             return;
         }
         hideAnswer();
         currentQuestionId += 1;
         displayQuestion();
+    }
+
+    public void onClickFragment(View v) {
+        answerFragment.onClick(v);
+    }
+
+    public void validateAnswer(View v) {
+        Button button = (Button) v;
+        if (!validated) {
+            displayAnswer();
+            button.setText(NEXT_BUTTON_TEXT);
+            validated = true;
+        }
+        else {
+            nextQuestion();
+            button.setText(VALIDATE_BUTTON_TEXT);
+            validated = false;
+        }
     }
 
     private void displayQuestion() {
@@ -72,24 +90,6 @@ public class QuestionActivity extends AppCompatActivity {
         bundle.putSerializable(AnswerFragment.INTENT_QUESTION_TAG, question);
         answerFragment.setArguments(bundle);
         ft.add(R.id.fragmentLayout, answerFragment).commit();
-    }
-
-    public void onClickFragment(View v) {
-        answerFragment.onClick(v);
-    }
-
-    public void validateAnswer(View v) {
-        Button button = (Button) v;
-        if (!validated) {
-            displayAnswer();
-            button.setText(NEXT_BUTTON_TEXT);
-            validated = true;
-        }
-        else {
-            nextQuestion();
-            button.setText(VALIDATE_BUTTON_TEXT);
-            validated = false;
-        }
     }
 
     private void displayAnswer() {
@@ -124,11 +124,9 @@ public class QuestionActivity extends AppCompatActivity {
         layout.setVisibility(View.GONE);
     }
 
-    // 5 parts:
-    // Instruction
-    // Question
-    // Answer
-    // Validate
-    // progress bar
-
+    private void startLessonEndActivity() {
+        Intent intent = new Intent(this, LessonEndActivity.class);
+        //intent.putExtra(LessonEndActivity.INTENT_LESSON_TAG, lesson);
+        startActivity(intent);
+    }
 }
