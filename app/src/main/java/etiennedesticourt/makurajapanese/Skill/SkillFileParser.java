@@ -91,7 +91,7 @@ public class SkillFileParser {
             }
         }
 
-        return new Lesson(id, words, false, questions);
+        return new Lesson(0, id, words, false, questions);
     }
 
     private static Question parseQuestionNode(Element questionElement) throws SkillFileParserException {
@@ -130,14 +130,14 @@ public class SkillFileParser {
         if (options.size() != NUM_DEFINITION_OPTIONS || images.size() != NUM_DEFINITION_OPTIONS) {
             throw new SkillFileParserException("Definition question does not have the right number of options.");
         }
-        return new DefinitionQuestion(options,images, sentence, answer);
+        return null; //return new DefinitionQuestion(options,images, 0, sentence, answer);
     }
 
     private static Question parseDefaultQuestionNode(Element questionElement, QuestionType type)
         throws SkillFileParserException {
         String sentence = parseTextElementByTag(questionElement, QUESTION_SENTENCE_TAG);
         String answer = parseTextElementByTag(questionElement, QUESTION_ANSWER_TAG);
-        return new Question(type, sentence, answer);
+        return null; //new Question(type, 0, sentence, answer);
     }
 
     private static String parseTextElementByTag(Element root, String tag)

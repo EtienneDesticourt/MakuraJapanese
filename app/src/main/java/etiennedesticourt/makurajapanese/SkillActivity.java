@@ -32,7 +32,7 @@ public class SkillActivity extends AppCompatActivity {
         // Load skill
         Intent intent = getIntent();
         String skillName = intent.getStringExtra(INTENT_SKILL_FILE_TAG);
-        CourseDbHelper dbHelper = new CourseDbHelper(this);
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(this);
         CourseFactory factory = new CourseFactory(dbHelper);
         skill = factory.buildSkill(skillName); //TODO: Add error handling
 

@@ -15,6 +15,28 @@ public class Skill {
         this.lessons = lessons;
     }
 
+    public int getMasteryLevel() {
+        if (lessons.size() == 0) {
+            return 5;
+        }
+        int total = 0;
+        for (int i=0; i<lessons.size(); i++) {
+            Lesson lesson = lessons.get(i);
+            total += lesson.getMasteryLevel();
+        }
+        return total / lessons.size();
+    }
+
+    public boolean isCompleted() {
+        for (int i=0; i<lessons.size(); i++) {
+            Lesson lesson = lessons.get(i);
+            if (!lesson.isCompleted()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String getTitle(){
         return title;
     }

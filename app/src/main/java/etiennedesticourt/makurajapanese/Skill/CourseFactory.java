@@ -2,7 +2,9 @@ package etiennedesticourt.makurajapanese.Skill;
 
 import android.database.Cursor;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 
@@ -45,13 +47,20 @@ public class CourseFactory {
             questions.add(question);
         }
 
-        return new Lesson(number, words, completed, questions);
+        return new Lesson(lessonId, number, words, completed, questions);
     }
 
     private Question buildQuestion(Cursor cursor) {
+        int questionId = cursor.getInt(0);
         String type = dbHelper.getString(cursor, "type");
         int interval = dbHelper.getInt(cursor, "interval");
-        String nextReview = dbHelper.getString(cursor, "next_review");
+        String nextReviewString = dbHelper.getString(cursor, "next_review");
+        Date nextReview = null;
+        try {
+            nextReview = Question.DATE_FORMAT.parse(nextReviewString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int number = dbHelper.getInt(cursor, "number");
         String sentence = dbHelper.getString(cursor, "sentence");
         String answer = dbHelper.getString(cursor, "answer");
@@ -75,9 +84,9 @@ public class CourseFactory {
             images.add(image2);
             images.add(image3);
             images.add(image4);
-            return new DefinitionQuestion(options, images, sentence, answer);
+            return new DefinitionQuestion(options, images, questionId, sentence, answer, interval, nextReview);
         }
 
-        return new Question(QuestionType.fromString(type), sentence, answer);
+        return new Question(QuestionType.fromString(type), questionId, sentence, answer, interval, nextReview);
     }
 }

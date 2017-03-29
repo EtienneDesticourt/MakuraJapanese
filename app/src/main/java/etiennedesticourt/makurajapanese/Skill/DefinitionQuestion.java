@@ -3,13 +3,14 @@ package etiennedesticourt.makurajapanese.Skill;
 import android.databinding.BindingAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DefinitionQuestion extends Question{
     private ArrayList<String> imageNames;
     private ArrayList<String> options;
 
-    public DefinitionQuestion(ArrayList<String> options, ArrayList<String> imageNames, String sentence, String answer) {
-        super(QuestionType.WORD_DEFINITION, sentence, answer);
+    public DefinitionQuestion(ArrayList<String> options, ArrayList<String> imageNames, int id, String sentence, String answer, int interval, Date date) {
+        super(QuestionType.WORD_DEFINITION, id, sentence, answer, interval, date);
         this.options = options;
         this.imageNames = imageNames;
     }

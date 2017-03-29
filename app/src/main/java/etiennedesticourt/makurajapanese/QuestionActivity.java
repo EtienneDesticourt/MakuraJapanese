@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
+import etiennedesticourt.makurajapanese.Skill.CourseFactory;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
 import etiennedesticourt.makurajapanese.Skill.Question;
 import etiennedesticourt.makurajapanese.Skill.QuestionType;
@@ -43,6 +45,8 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void nextQuestion() {
         if (currentQuestionId + 1 >= lesson.getNumQuestions()) {
+            lesson.setCompleted(true);
+            saveLesson();
             startLessonEndActivity();
             return;
         }
@@ -58,7 +62,17 @@ public class QuestionActivity extends AppCompatActivity {
     public void validateAnswer(View v) {
         Button button = (Button) v;
         if (!validated) {
-            displayAnswer();
+            Question question = lesson.getQuestion(currentQuestionId);
+            String given = answerFragment.getAnswer();
+            String actual = question.getAnswer();
+            if (given.equals(actual)) {
+                displayCorrectAnswer();
+                question.increaseInterval();
+            }
+            else {
+                displayIncorrectAnswer();
+                question.resetInterval();
+            }
             button.setText(NEXT_BUTTON_TEXT);
             validated = true;
         }
@@ -92,18 +106,7 @@ public class QuestionActivity extends AppCompatActivity {
         ft.add(R.id.fragmentLayout, answerFragment).commit();
     }
 
-    private void displayAnswer() {
-        String given = answerFragment.getAnswer();
-        String actual = lesson.getQuestion(currentQuestionId).getAnswer();
-        if (given.equals(actual)) {
-            correctAnswer();
-        }
-        else {
-            incorrectAnswer();
-        }
-    }
-
-    private void correctAnswer(){
+    private void displayCorrectAnswer(){
         TextView answerStatus = (TextView) findViewById(R.id.answerStatus);
         answerStatus.setText(ANSWER_STATUS_CORRECT);
         View layout = findViewById(R.id.answerValidationLayout);
@@ -111,7 +114,7 @@ public class QuestionActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.color.colorQuestionCorrectAnswerBackground);
     }
 
-    private void incorrectAnswer() {
+    private void displayIncorrectAnswer() {
         TextView answerStatus = (TextView) findViewById(R.id.answerStatus);
         answerStatus.setText(ANSWER_STATUS_INCORRECT);
         View layout = findViewById(R.id.answerValidationLayout);
@@ -122,6 +125,11 @@ public class QuestionActivity extends AppCompatActivity {
     private void hideAnswer() {
         View layout = findViewById(R.id.answerValidationLayout);
         layout.setVisibility(View.GONE);
+    }
+
+    private void saveLesson() {
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(this);
+        dbHelper.saveLesson(lesson);
     }
 
     private void startLessonEndActivity() {

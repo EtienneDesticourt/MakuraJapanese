@@ -14,8 +14,10 @@ public class LessonEndActivity extends AppCompatActivity {
     }
 
     public void goBackToMainActivity(View v) {
+        finish();
+        /*
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }
