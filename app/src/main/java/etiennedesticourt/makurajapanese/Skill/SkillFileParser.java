@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+@Deprecated
 public class SkillFileParser {
     private static final String SKILL_ROOT_TAG = "skill";
     private static final String TITLE_TAG = "title";
@@ -29,6 +30,8 @@ public class SkillFileParser {
     private static final String QUESTION_OPTION_IMAGE_TAG = "image";
     private static final String QUESTION_OPTION_TEXT_TAG = "text";
     private static final int NUM_DEFINITION_OPTIONS = 4;
+
+    private SkillFileParser() {}
 
     public static Skill parseSkillFile(InputStream skill) throws SkillFileParserException {
         Document doc;
@@ -88,7 +91,7 @@ public class SkillFileParser {
             }
         }
 
-        return new Lesson(id, words, questions);
+        return new Lesson(id, words, false, questions);
     }
 
     private static Question parseQuestionNode(Element questionElement) throws SkillFileParserException {

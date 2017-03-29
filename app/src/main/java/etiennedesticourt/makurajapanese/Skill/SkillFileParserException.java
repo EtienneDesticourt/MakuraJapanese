@@ -1,5 +1,6 @@
 package etiennedesticourt.makurajapanese.Skill;
 
+@Deprecated
 public class SkillFileParserException extends Exception{
     public final String message;
 

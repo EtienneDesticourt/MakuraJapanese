@@ -4,20 +4,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Lesson implements Serializable{
-    private int id;
+    private int number;
     private String[] words;
     private String wordsSentence;
+    private boolean completed;
     private ArrayList<Question> questions;
 
-    public Lesson(int id, String words, ArrayList<Question> questions) {
-        this.id = id;
+    public Lesson(int number, String words, boolean completed, ArrayList<Question> questions) {
+        this.number = number;
         this.words = words.split(" ");
         this.wordsSentence = words;
+        this.completed = completed;
         this.questions = questions;
     }
 
-    public int getId() {
-        return id;
+    public int getNumber() {
+        return number;
     }
 
     public String[] getWords(){
@@ -37,7 +39,7 @@ public class Lesson implements Serializable{
     }
 
     public String getName() {
-        return "Lesson " + String.valueOf(id);
+        return "Lesson " + String.valueOf(number);
     }
 
     public int getNumQuestions() {

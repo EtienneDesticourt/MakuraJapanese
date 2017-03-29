@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
-import java.io.InputStream;
-
+import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
+import etiennedesticourt.makurajapanese.Skill.CourseFactory;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
 import etiennedesticourt.makurajapanese.Skill.Skill;
-import etiennedesticourt.makurajapanese.Skill.SkillFileParser;
-import etiennedesticourt.makurajapanese.Skill.SkillFileParserException;
 
 public class SkillActivity extends AppCompatActivity {
     public static final String INTENT_SKILL_FILE_TAG = "skill_path";
@@ -34,18 +31,10 @@ public class SkillActivity extends AppCompatActivity {
 
         // Load skill
         Intent intent = getIntent();
-        String skillFile = intent.getStringExtra(INTENT_SKILL_FILE_TAG);
-        int resourceId = getResources().getIdentifier(skillFile, SKILL_FILE_FOLDER, getPackageName());
-        InputStream skillStream = getResources().openRawResource(resourceId);
-
-        try {
-            skill = SkillFileParser.parseSkillFile(skillStream);
-        }
-        catch (SkillFileParserException e) {
-            Log.d("FUCK", e.message);
-            return;
-            // Handle.
-        }
+        String skillName = intent.getStringExtra(INTENT_SKILL_FILE_TAG);
+        CourseDbHelper dbHelper = new CourseDbHelper(this);
+        CourseFactory factory = new CourseFactory(dbHelper);
+        skill = factory.buildSkill(skillName); //TODO: Add error handling
 
         // Get corresponding picture
         int backgroundId = getResources().getIdentifier(
