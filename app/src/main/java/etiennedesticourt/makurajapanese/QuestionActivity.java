@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 import etiennedesticourt.makurajapanese.Skill.CourseFactory;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
@@ -24,7 +26,7 @@ public class QuestionActivity extends AppCompatActivity {
     private final String ANSWER_STATUS_CORRECT = "Correct.";
     private final String ANSWER_STATUS_INCORRECT = "Incorrect.";
     private Lesson lesson;
-    private int currentQuestionId = 0;
+    private ArrayList<Question> questions;
     private AnswerFragment answerFragment;
     private ActivityQuestionBinding binding;
     private boolean validated = false;
@@ -36,6 +38,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         lesson = (Lesson) intent.getSerializableExtra(INTENT_LESSON_TAG);
+        questions = new ArrayList<>(lesson.getQuestions());
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question);
         TextView sentence = (TextView) binding.getRoot().findViewById(R.id.question);
@@ -43,15 +46,22 @@ public class QuestionActivity extends AppCompatActivity {
         displayQuestion();
     }
 
+    public Question getCurrentQuestion() {
+        return questions.get(0);
+    }
+
+    public int getNumRemainingQuestions() {
+        return questions.size();
+    }
+
     public void nextQuestion() {
-        if (currentQuestionId + 1 >= lesson.getNumQuestions()) {
+        if (getNumRemainingQuestions() == 0) {
             lesson.setCompleted(true);
             saveLesson();
             startLessonEndActivity();
             return;
         }
         hideAnswer();
-        currentQuestionId += 1;
         displayQuestion();
     }
 
@@ -62,14 +72,16 @@ public class QuestionActivity extends AppCompatActivity {
     public void validateAnswer(View v) {
         Button button = (Button) v;
         if (!validated) {
-            Question question = lesson.getQuestion(currentQuestionId);
+            Question question = getCurrentQuestion();
             String given = answerFragment.getAnswer();
             String actual = question.getAnswer();
+            questions.remove(question);
             if (given.equals(actual)) {
                 displayCorrectAnswer();
                 question.increaseInterval();
             }
             else {
+                questions.add(question);
                 displayIncorrectAnswer();
                 question.resetInterval();
             }
@@ -84,7 +96,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void displayQuestion() {
-        Question question = lesson.getQuestion(currentQuestionId);
+        Question question = getCurrentQuestion();
         binding.setQuestion(question);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
