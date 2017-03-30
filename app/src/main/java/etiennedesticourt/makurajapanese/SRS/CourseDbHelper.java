@@ -88,6 +88,12 @@ public class CourseDbHelper extends SQLiteOpenHelper {
         return db.query(CourseContract.SKILL_TABLE, null, "name=?", new String[]{name}, null, null, null, null);
     }
 
+    public Cursor getLesson(int lessonId) {
+        String id = String.valueOf(lessonId);
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(CourseContract.LESSON_TABLE, null, "id=?", new String[]{id}, null, null, null, null);
+    }
+
     public Cursor getLessonsForSkill(int skillId) {
         String id = String.valueOf(skillId);
         SQLiteDatabase db = getReadableDatabase();

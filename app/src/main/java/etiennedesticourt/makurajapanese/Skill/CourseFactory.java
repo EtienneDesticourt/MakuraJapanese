@@ -34,7 +34,7 @@ public class CourseFactory {
         return new Skill(skillName, lessons);
     }
 
-    private Lesson buildLesson(Cursor cursor) {
+    public Lesson buildLesson(Cursor cursor) {
         int lessonId = cursor.getInt(0);
         int number = dbHelper.getInt(cursor, "number");
         String words = dbHelper.getString(cursor, "words");
