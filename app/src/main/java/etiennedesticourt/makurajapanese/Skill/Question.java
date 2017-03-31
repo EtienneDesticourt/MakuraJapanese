@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 
 public class Question implements Serializable{
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
@@ -21,6 +22,11 @@ public class Question implements Serializable{
         this.answer = answer;
         this.interval = interval;
         this.nextReview = nextReview;
+    }
+
+    public boolean answerIsCorrect(String givenAnswer) {
+        double similarity = StringUtils.getJaroWinklerDistance(answer, givenAnswer);
+        return similarity >= 0.9;
     }
 
     public void resetInterval() {

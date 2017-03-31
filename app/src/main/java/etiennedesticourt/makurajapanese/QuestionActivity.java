@@ -76,9 +76,8 @@ public class QuestionActivity extends AppCompatActivity {
         if (!validated) {
             Question question = getCurrentQuestion();
             String given = answerFragment.getAnswer();
-            String actual = question.getAnswer();
             questions.remove(question);
-            if (given.equals(actual)) {
+            if (question.answerIsCorrect(given)) {
                 displayCorrectAnswer();
                 question.increaseInterval();
             }
