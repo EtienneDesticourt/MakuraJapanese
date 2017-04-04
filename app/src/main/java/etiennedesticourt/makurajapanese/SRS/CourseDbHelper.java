@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.google.common.util.concurrent.UncheckedExecutionException;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -112,7 +110,7 @@ public class CourseDbHelper extends SQLiteOpenHelper {
         try {
             sql = IOUtils.toString(stream, encoding);
         } catch (IOException e) {
-            throw new UncheckedExecutionException("Unrecoverable error while creating database.", null);
+            throw new RuntimeException("Unrecoverable error while creating database.");
         }
         executeBatchSql(db, sql);
         loaded = true;
