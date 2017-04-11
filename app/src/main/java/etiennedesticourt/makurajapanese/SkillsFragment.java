@@ -47,7 +47,7 @@ public class SkillsFragment extends Fragment{
         Skill subject = factory.buildSkill("Subject");
         Skill pointing = factory.buildSkill("Pointing");
         Skill questions = factory.buildSkill("Questions");
-        Skill introduction = factory.buildSkill("Introduction");
+        Skill introduction = factory.buildSkill("Animals");
 
         ImageView imageView;
         View mainLayout = rootView.findViewById(R.id.skillScroller).findViewById(R.id.mainSkillLayout);
@@ -59,7 +59,7 @@ public class SkillsFragment extends Fragment{
         setMasteryDrawable(pointing, imageView);
         imageView = (ImageView) mainLayout.findViewById(R.id.pointingQuestionLayout).findViewById(R.id.questionsMastery);
         setMasteryDrawable(questions, imageView);
-        imageView = (ImageView) mainLayout.findViewById(R.id.introductionMastery);
+        imageView = (ImageView) mainLayout.findViewById(R.id.animalsMastery);
         setMasteryDrawable(introduction, imageView);
     }
 }
