@@ -1,0 +1,10 @@
+(NULL,'definition',1,'2017-04-10',1,'To keep an animal','飼う',7,'飼う','犬','猫','動物','kau','inu','neko','doubutsu'),
+(NULL,'transcription',1,'2017-04-10',2,'飼う','かう',7,'','','','','','','',''),
+(NULL,'definition',1,'2017-04-10',3,'Dog','犬',7,'飼う','犬','猫','動物','kau','inu','neko','doubutsu'),
+(NULL,'transcription',1,'2017-04-10',4,'犬','いぬ',7,'','','','','','','',''),
+(NULL,'definition',1,'2017-04-10',5,'Cat','猫',7,'飼う','犬','猫','動物','kau','inu','neko','doubutsu'),
+(NULL,'transcription',1,'2017-04-10',6,'猫','ねこ',7,'','','','','','','',''),
+(NULL,'definition',1,'2017-04-10',7,'Animal','動物',7,'飼う','犬','猫','動物','kau','inu','neko','doubutsu'),
+(NULL,'transcription',1,'2017-04-10',8,'動物','どうぶつ',7,'','','','','','','',''),
+(NULL,'definition',1,'2017-04-10',9,'Pig','豚',7,'飼う','犬','猫','豚','kau','inu','neko','buta'),
+(NULL,'transcription',1,'2017-04-10',10,'豚','ぶた',7,'','','','','','','','')
