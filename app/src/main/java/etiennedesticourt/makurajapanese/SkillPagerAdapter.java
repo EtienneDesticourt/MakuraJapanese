@@ -14,13 +14,15 @@ public class SkillPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new HiraganaFragment();
+            return new SkillsFragment();
+            //return new HiraganaFragment();
         }
         else if (position == 1) {
             return new SkillsFragment();
         }
         else {
-            return new RadicalsFragment();
+            return new SkillsFragment();
+            //return new RadicalsFragment();
         }
     }
 
