@@ -3,7 +3,8 @@ package etiennedesticourt.makurajapanese.Skill;
 public enum QuestionType {
     WORD_DEFINITION,
     SENTENCE_CONSTRUCTION,
-    WRITTEN_TRANSLATION;
+    WRITTEN_TRANSLATION,
+    KANJI_TRANSCRIPTION;
 
     public static String getExplanation(QuestionType type) {
         if (type == WORD_DEFINITION) {
@@ -14,6 +15,9 @@ public enum QuestionType {
         }
         if (type == WRITTEN_TRANSLATION) {
             return "Translate the following sentence.";
+        }
+        if (type == KANJI_TRANSCRIPTION) {
+            return "Write the hiragana for this kanji.";
         }
         return "No recorded explanation for this question type.";
     }
@@ -27,6 +31,9 @@ public enum QuestionType {
         }
         if ("translation".equals(type)) {
             return WRITTEN_TRANSLATION;
+        }
+        if ("transcription".equals(type)) {
+            return KANJI_TRANSCRIPTION;
         }
         return null;
     }
