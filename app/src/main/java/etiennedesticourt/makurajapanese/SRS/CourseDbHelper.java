@@ -34,7 +34,7 @@ public class CourseDbHelper extends SQLiteOpenHelper {
     private CourseDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         res = context.getResources();
-        context.deleteDatabase(DATABASE_NAME);
+        //context.deleteDatabase(DATABASE_NAME);
     }
 
     public void saveLesson(Lesson lesson) {

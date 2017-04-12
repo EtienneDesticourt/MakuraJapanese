@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class SkillPagerAdapter extends FragmentPagerAdapter {
-    private static final int NUM_PAGES = 3;
+    private static final int NUM_PAGES = 1;
 
     public SkillPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -13,6 +13,8 @@ public class SkillPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        return new SkillsFragment();
+        /*
         if (position == 0) {
             return new SkillsFragment();
             //return new HiraganaFragment();
@@ -24,6 +26,7 @@ public class SkillPagerAdapter extends FragmentPagerAdapter {
             return new SkillsFragment();
             //return new RadicalsFragment();
         }
+        */
     }
 
     @Override
