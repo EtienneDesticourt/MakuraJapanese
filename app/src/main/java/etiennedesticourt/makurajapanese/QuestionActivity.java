@@ -34,6 +34,7 @@ public class QuestionActivity extends AppCompatActivity {
     private AnswerFragment answerFragment;
     private ActivityQuestionBinding binding;
     private boolean validated = false;
+    private boolean chartVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,19 @@ public class QuestionActivity extends AppCompatActivity {
         TextView sentence = (TextView) binding.getRoot().findViewById(R.id.question);
         sentence.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         displayQuestion();
+    }
+
+    public void toggleChart(View v) {
+        chartVisible = !chartVisible;
+        if (chartVisible) {
+            findViewById(R.id.hiraganaChart).setVisibility(View.VISIBLE);
+            findViewById(R.id.hiraganaChart).bringToFront();
+            findViewById(R.id.hiraganaButton).bringToFront();
+        }
+        else {
+            findViewById(R.id.hiraganaChart).setVisibility(View.INVISIBLE);
+        }
+
     }
 
     public void playSound(View v) {
