@@ -10,6 +10,7 @@ import etiennedesticourt.makurajapanese.Skill.DefinitionQuestion;
 import etiennedesticourt.makurajapanese.databinding.FragmentQuestionDefinitionBinding;
 
 public class DefinitionFragment extends AnswerFragment {
+    private static final int DEFAULT_DRAWABLE_ID = R.drawable.sound_icon;
     private static final String IMAGE_FOLDER = "drawable";
     private int selectedOption = -1;
     private int selectedId = -1;
@@ -54,6 +55,9 @@ public class DefinitionFragment extends AnswerFragment {
         ImageView image = (ImageView) rootView.findViewById(viewId);
         String resourceName = question.getImageResource(imageId);
         int resourceId = getResources().getIdentifier(resourceName, IMAGE_FOLDER, MainActivity.PACKAGE_NAME);
+        if (resourceId == 0) {
+            resourceId = DEFAULT_DRAWABLE_ID;
+        }
         image.setImageResource(resourceId);
     }
 }
