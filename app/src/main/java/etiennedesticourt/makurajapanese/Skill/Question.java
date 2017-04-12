@@ -17,6 +17,7 @@ public class Question implements Serializable{
     private Date nextReview;
 
     public Question(QuestionType type, int id, String sentence, String answer, int interval, Date nextReview) {
+        this.id = id;
         this.type = type;
         this.sentence = sentence;
         this.answer = answer;

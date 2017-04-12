@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class QuestionActivity extends AppCompatActivity {
     private final String VALIDATE_BUTTON_TEXT = "VALIDATE";
     private final String ANSWER_STATUS_CORRECT = "Correct.";
     private final String ANSWER_STATUS_INCORRECT = "Incorrect.";
+    private final String SOUND_FOLDER = "raw";
     private Lesson lesson;
     private ArrayList<Question> questions;
     private AnswerFragment answerFragment;
@@ -42,10 +44,28 @@ public class QuestionActivity extends AppCompatActivity {
         lesson = (Lesson) intent.getSerializableExtra(INTENT_LESSON_TAG);
         questions = new ArrayList<>(lesson.getQuestions());
 
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question);
         TextView sentence = (TextView) binding.getRoot().findViewById(R.id.question);
         sentence.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         displayQuestion();
+    }
+
+    public void playSound(View v) {
+        Question question = getCurrentQuestion();
+        int questionId = question.getId();
+        String soundFile = "q" + String.valueOf(questionId);
+        int resourceId = getResources().getIdentifier(soundFile, SOUND_FOLDER, MainActivity.PACKAGE_NAME);
+        if (resourceId != 0) {
+            MediaPlayer sound = MediaPlayer.create(this, resourceId);
+            sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            sound.start();
+        }
     }
 
     public Question getCurrentQuestion() {

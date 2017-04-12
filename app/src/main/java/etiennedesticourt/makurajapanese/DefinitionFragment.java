@@ -1,6 +1,7 @@
 package etiennedesticourt.makurajapanese;
 
 import android.databinding.DataBindingUtil;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import etiennedesticourt.makurajapanese.databinding.FragmentQuestionDefinitionBi
 public class DefinitionFragment extends AnswerFragment {
     private static final int DEFAULT_DRAWABLE_ID = R.drawable.sound_icon;
     private static final String IMAGE_FOLDER = "drawable";
+    private static final String SOUND_FOLDER = "raw";
     private int selectedOption = -1;
     private int selectedId = -1;
 
@@ -48,6 +50,22 @@ public class DefinitionFragment extends AnswerFragment {
         selectedOption = Integer.valueOf((String) v.getTag());
         selectedId = v.getId();
         v.setSelected(true);
+
+        DefinitionQuestion question = (DefinitionQuestion) getQuestion();
+        String resourceName = question.getImageResource(selectedOption);
+        int resourceId = getResources().getIdentifier(resourceName, SOUND_FOLDER, MainActivity.PACKAGE_NAME);
+        System.out.println(resourceName);
+        System.out.println(resourceId);
+        if (resourceId != 0) {
+            MediaPlayer player = MediaPlayer.create(getActivity(), resourceId);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            player.start();
+        }
     }
 
     private void setOptionImage(View rootView, int viewId, int imageId) {
