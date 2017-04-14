@@ -25,9 +25,7 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 
 // Add validation sound
 
-// Fix question validation bug
 // Fix memory issue in setOptionImage
-// Fix finished lesson quick validation bug
 
 // Add ads at end of lesson
 
@@ -38,6 +36,7 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 // Beautify 3 fragments
 // Handle touch event + scrolling issue
 // Clean last minute demo shit (put all analytics widget shit in analytics package)
+// Fix finished lesson quick validation bug (it brings back question activity to the front despite the finish)
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         //pager.setCurrentItem(1);
 
 
-        FirebaseLogger.INSTANCE.setContext(this);
+        FirebaseLogger.INSTANCE.setContext(this.getApplicationContext());
         //getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getBoolean(PREFS_FIRST_OPEN, true)) {

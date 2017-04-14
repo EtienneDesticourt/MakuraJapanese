@@ -31,7 +31,7 @@ public class LessonPresentationFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getContext());
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getContext().getApplicationContext());
         Cursor cursor = dbHelper.getLesson(lesson.getId());
         cursor.moveToFirst();
         CourseFactory factory = new CourseFactory(dbHelper);

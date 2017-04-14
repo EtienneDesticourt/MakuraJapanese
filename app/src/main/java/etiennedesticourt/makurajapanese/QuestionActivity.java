@@ -212,7 +212,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void saveLesson() {
-        CourseDbHelper dbHelper = CourseDbHelper.getInstance(this);
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getApplicationContext());
         dbHelper.saveLesson(lesson);
     }
 

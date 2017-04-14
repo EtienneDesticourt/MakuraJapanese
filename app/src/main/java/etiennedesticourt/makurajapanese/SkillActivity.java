@@ -40,7 +40,7 @@ public class SkillActivity extends AppCompatActivity {
         // Load skill
         Intent intent = getIntent();
         String skillName = intent.getStringExtra(INTENT_SKILL_FILE_TAG);
-        CourseDbHelper dbHelper = CourseDbHelper.getInstance(this);
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getApplicationContext());
         CourseFactory factory = new CourseFactory(dbHelper);
         skill = factory.buildSkill(skillName); //TODO: Add error handling
         wasCompleted = skill.isCompleted();

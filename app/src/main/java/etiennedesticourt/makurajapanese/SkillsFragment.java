@@ -39,7 +39,7 @@ public class SkillsFragment extends Fragment{
     }
 
     public void updateMasteryDisplay(View rootView) {
-        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getContext());
+        CourseDbHelper dbHelper = CourseDbHelper.getInstance(getContext().getApplicationContext());
         CourseFactory factory = new CourseFactory(dbHelper);
 
         Skill greetings = factory.buildSkill("Greetings");
