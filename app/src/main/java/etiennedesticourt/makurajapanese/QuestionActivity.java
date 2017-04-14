@@ -44,6 +44,7 @@ public class QuestionActivity extends AppCompatActivity {
     private Logger logger = FirebaseLogger.INSTANCE;
     private SimpleTimer lessonTimer;
     private SimpleTimer questionTimer;
+    private boolean doneWithReview = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void nextQuestion() {
         if (getNumRemainingQuestions() == 0) {
+            doneWithReview = true;
             lesson.setCompleted(true);
             saveLesson();
             startLessonEndActivity();
@@ -127,6 +129,9 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     public void validateAnswer(View v) {
+        if (doneWithReview) { //Handles spamming the next button at the end of the lesson
+            return;
+        }
         Button button = (Button) v;
         if (!validated) {
             Question question = getCurrentQuestion();
