@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
+import etiennedesticourt.makurajapanese.Analytics.Logger;
 import etiennedesticourt.makurajapanese.Skill.DefinitionQuestion;
 import etiennedesticourt.makurajapanese.databinding.FragmentQuestionDefinitionBinding;
 
@@ -16,6 +18,7 @@ public class DefinitionFragment extends AnswerFragment {
     private static final String SOUND_FOLDER = "raw";
     private int selectedOption = -1;
     private int selectedId = -1;
+    private Logger logger = FirebaseLogger.INSTANCE;
 
     @Override
     public View bind(LayoutInflater inflater, ViewGroup container) {
@@ -54,8 +57,6 @@ public class DefinitionFragment extends AnswerFragment {
         DefinitionQuestion question = (DefinitionQuestion) getQuestion();
         String resourceName = question.getImageResource(selectedOption);
         int resourceId = getResources().getIdentifier(resourceName, SOUND_FOLDER, MainActivity.PACKAGE_NAME);
-        System.out.println(resourceName);
-        System.out.println(resourceId);
         if (resourceId != 0) {
             MediaPlayer player = MediaPlayer.create(getActivity(), resourceId);
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -66,6 +67,8 @@ public class DefinitionFragment extends AnswerFragment {
             });
             player.start();
         }
+
+        logger.logQuestionOptionSelectedEvent(getQuestion().getId(), selectedOption, resourceName);
     }
 
     private void setOptionImage(View rootView, int viewId, int imageId) {

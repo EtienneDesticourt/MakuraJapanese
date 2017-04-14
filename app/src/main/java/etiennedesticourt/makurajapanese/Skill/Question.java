@@ -15,6 +15,7 @@ public class Question implements Serializable{
     private String answer;
     private int interval;
     private Date nextReview;
+    private int attempts;
 
     public Question(QuestionType type, int id, String sentence, String answer, int interval, Date nextReview) {
         this.id = id;
@@ -23,6 +24,7 @@ public class Question implements Serializable{
         this.answer = answer;
         this.interval = interval;
         this.nextReview = nextReview;
+        this.attempts = 0;
     }
 
     public boolean answerIsCorrect(String givenAnswer) {
@@ -51,6 +53,14 @@ public class Question implements Serializable{
         Date today = cal.getTime();
         long diff = today.getTime() - nextReview.getTime();
         return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
+    public void increaseAttempts() {
+        attempts += 1;
+    }
+
+    public int getAttempts() {
+        return attempts;
     }
 
     public int getId() {

@@ -31,7 +31,7 @@ public class CourseFactory {
             lessons.add(lesson);
         }
 
-        return new Skill(skillName, lessons);
+        return new Skill(skillId, skillName, lessons);
     }
 
     public Lesson buildLesson(Cursor cursor) {

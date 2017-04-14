@@ -15,11 +15,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
+import etiennedesticourt.makurajapanese.Analytics.Logger;
 import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
-import etiennedesticourt.makurajapanese.Skill.CourseFactory;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
 import etiennedesticourt.makurajapanese.Skill.Question;
 import etiennedesticourt.makurajapanese.Skill.QuestionType;
+import etiennedesticourt.makurajapanese.Utils.SimpleTimer;
 import etiennedesticourt.makurajapanese.databinding.ActivityQuestionBinding;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -35,6 +37,11 @@ public class QuestionActivity extends AppCompatActivity {
     private ActivityQuestionBinding binding;
     private boolean validated = false;
     private boolean chartVisible = false;
+    private int failures = 0;
+    private int attempts = 1;
+    private Logger logger = FirebaseLogger.INSTANCE;
+    private SimpleTimer lessonTimer;
+    private SimpleTimer questionTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,13 @@ public class QuestionActivity extends AppCompatActivity {
         TextView sentence = (TextView) binding.getRoot().findViewById(R.id.question);
         sentence.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         displayQuestion();
+        lessonTimer = SimpleTimer.start();
+        logger.logLessonStartedEvent(lesson.getId());
+    }
+
+    public void onPause() {
+        super.onPause();
+        logger.logLessonClosedEvent(lesson.getId(), lessonTimer.getDuration());
     }
 
     public void toggleChart(View v) {
@@ -58,6 +72,7 @@ public class QuestionActivity extends AppCompatActivity {
             findViewById(R.id.hiraganaChart).setVisibility(View.VISIBLE);
             findViewById(R.id.hiraganaChart).bringToFront();
             findViewById(R.id.hiraganaButton).bringToFront();
+            logger.logHiraganaShownEvent(lesson.getId(), getCurrentQuestion().getId());
         }
         else {
             findViewById(R.id.hiraganaChart).setVisibility(View.INVISIBLE);
@@ -80,6 +95,7 @@ public class QuestionActivity extends AppCompatActivity {
             });
             sound.start();
         }
+        logger.logQuestionSoundPlayedEvent(lesson.getId(), questionId);
     }
 
     public Question getCurrentQuestion() {
@@ -95,8 +111,11 @@ public class QuestionActivity extends AppCompatActivity {
             lesson.setCompleted(true);
             saveLesson();
             startLessonEndActivity();
+            logger.logLessonCompletedEvent(lesson.getId(), lessonTimer.getDuration(),
+                    failures, attempts);
             return;
         }
+        attempts += 1;
         hideAnswer();
         displayQuestion();
     }
@@ -111,7 +130,8 @@ public class QuestionActivity extends AppCompatActivity {
             Question question = getCurrentQuestion();
             String given = answerFragment.getAnswer();
             questions.remove(question);
-            if (question.answerIsCorrect(given)) {
+            boolean answerIsCorrect = question.answerIsCorrect(given);
+            if (answerIsCorrect) {
                 displayCorrectAnswer();
                 question.increaseInterval();
             }
@@ -119,9 +139,15 @@ public class QuestionActivity extends AppCompatActivity {
                 questions.add(question);
                 displayIncorrectAnswer();
                 question.resetInterval();
+                failures += 1;
             }
             button.setText(NEXT_BUTTON_TEXT);
             validated = true;
+            logger.logQuestionValidatedEvent(lesson.getId(), question.getId(),
+                    questionTimer.getDuration(),
+                    question.getAttempts(),
+                    answerIsCorrect,
+                    given);
         }
         else {
             nextQuestion();
@@ -131,7 +157,9 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void displayQuestion() {
+        questionTimer = SimpleTimer.start();
         Question question = getCurrentQuestion();
+        question.increaseAttempts();
         binding.setQuestion(question);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -151,6 +179,8 @@ public class QuestionActivity extends AppCompatActivity {
         bundle.putSerializable(AnswerFragment.INTENT_QUESTION_TAG, question);
         answerFragment.setArguments(bundle);
         ft.add(R.id.fragmentLayout, answerFragment).commit();
+
+        logger.logQuestionOpenedEvent(lesson.getId(), question.getId());
     }
 
     private void displayCorrectAnswer(){
@@ -195,6 +225,11 @@ public class QuestionActivity extends AppCompatActivity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Question q = getCurrentQuestion();
+                        logger.logLessonAbortedEvent(lesson.getId(), q.getId(),
+                                lessonTimer.getDuration(),
+                                failures,
+                                attempts);
                         finish();
                     }
 

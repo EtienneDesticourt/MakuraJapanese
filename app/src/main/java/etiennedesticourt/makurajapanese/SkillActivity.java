@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
+import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
+import etiennedesticourt.makurajapanese.Analytics.Logger;
 import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 import etiennedesticourt.makurajapanese.Skill.CourseFactory;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
 import etiennedesticourt.makurajapanese.Skill.Skill;
+import etiennedesticourt.makurajapanese.Utils.SimpleTimer;
 
 public class SkillActivity extends AppCompatActivity {
     public static final String INTENT_SKILL_FILE_TAG = "skill_path";
@@ -23,6 +26,8 @@ public class SkillActivity extends AppCompatActivity {
     private FragmentPagerAdapter adapter;
     private ViewPager pager;
     private Skill skill;
+    private Logger logger = FirebaseLogger.INSTANCE;
+    private SimpleTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,8 @@ public class SkillActivity extends AppCompatActivity {
                 SKILL_BACKGROUND_FOLDER,
                 getPackageName());
         ImageView skillPic = (ImageView) findViewById(R.id.skillImage);
-        skillPic.setBackgroundResource(backgroundId);
+        skillPic.setImageResource(backgroundId);
+        //skillPic.setBackgroundResource(backgroundId);
 
         TextView skillTitle = (TextView) findViewById(R.id.skillTitle);
         skillTitle.setText(skill.getTitle());
@@ -53,6 +59,18 @@ public class SkillActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
         CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.titles);
         indicator.setViewPager(pager);
+    }
+
+    public void onResume() {
+        super.onResume();
+        logger.logSkillOpenedEvent(skill.getId());
+        timer = SimpleTimer.start();
+    }
+
+    public void onPause() {
+        super.onPause();
+        int timeSpent = timer.getDuration();
+        logger.logSkillClosedEvent(skill.getId(), timeSpent);
     }
 
     public void startLesson(View v) {

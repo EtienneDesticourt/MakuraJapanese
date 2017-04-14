@@ -68,7 +68,7 @@ public class SkillFileParser {
             }
         }
 
-        return new Skill(title, lessons);
+        return new Skill(0, title, lessons);
     }
 
     private static Lesson parseLessonNode(int id, Node lessonNode) throws SkillFileParserException {

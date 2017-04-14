@@ -5,11 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
+import etiennedesticourt.makurajapanese.Analytics.Logger;
 import etiennedesticourt.makurajapanese.Skill.Lesson;
 import etiennedesticourt.makurajapanese.Skill.Skill;
 
 public class LessonPagerAdapter extends FragmentPagerAdapter {
     private Skill skill;
+    private Logger logger = FirebaseLogger.INSTANCE;
 
     public LessonPagerAdapter(FragmentManager fm, Skill skill) {
         super(fm);
@@ -23,6 +26,7 @@ public class LessonPagerAdapter extends FragmentPagerAdapter {
         bundle.putSerializable(LessonPresentationFragment.INTENT_LESSON_TAG, lesson);
         Fragment fragment = new LessonPresentationFragment();
         fragment.setArguments(bundle);
+        logger.logSkillLessonSwipedEvent(skill.getId(), lesson.getId());
         return fragment;
     }
 

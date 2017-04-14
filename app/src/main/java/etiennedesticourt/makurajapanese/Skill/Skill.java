@@ -5,12 +5,14 @@ import java.util.ArrayList;
 public class Skill {
     private String title;
     private ArrayList<Lesson> lessons;
+    private int id;
 
     public Skill(String title) {
         this.title = title;
     }
 
-    public Skill(String title, ArrayList<Lesson> lessons) {
+    public Skill(int id, String title, ArrayList<Lesson> lessons) {
+        this.id = id;
         this.title = title;
         this.lessons = lessons;
     }
@@ -35,6 +37,10 @@ public class Skill {
             }
         }
         return true;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle(){
