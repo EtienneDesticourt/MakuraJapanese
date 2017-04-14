@@ -191,7 +191,19 @@ public class QuestionActivity extends AppCompatActivity {
         logger.logQuestionOpenedEvent(lesson.getId(), question.getId());
     }
 
+    private void playAnswerSound(int soundId) {
+        MediaPlayer sound = MediaPlayer.create(this, soundId);
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+        sound.start();
+    }
+
     private void displayCorrectAnswer(){
+        playAnswerSound(R.raw.success);
         TextView answerStatus = (TextView) findViewById(R.id.answerStatus);
         answerStatus.setText(ANSWER_STATUS_CORRECT);
         View layout = findViewById(R.id.answerValidationLayout);
@@ -200,6 +212,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void displayIncorrectAnswer() {
+        playAnswerSound(R.raw.failure);
         TextView answerStatus = (TextView) findViewById(R.id.answerStatus);
         answerStatus.setText(ANSWER_STATUS_INCORRECT);
         View layout = findViewById(R.id.answerValidationLayout);

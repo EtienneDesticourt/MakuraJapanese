@@ -20,13 +20,8 @@ import com.etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 import com.google.android.gms.ads.MobileAds;
 
 //TODO:
-//DEMO :
-//Finish lessons
-
-// Add validation sound
-// Add ads at end of lesson
-
 //FULL RELEASE:
+// Add some more red to question activity, change native ad color to match color theme
 // Limit interval increase to once a day
 // Fix bug where listen button read next question after validation
 // Implement Construction fragment
