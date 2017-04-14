@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,6 +17,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
 import etiennedesticourt.makurajapanese.Analytics.Logger;
+import etiennedesticourt.makurajapanese.Analytics.UserProperty;
+import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 
 //TODO:
 //DEMO :
@@ -27,9 +30,6 @@ import etiennedesticourt.makurajapanese.Analytics.Logger;
 // Fix memory issue in setOptionImage
 // Fix finished lesson quick validation bug
 
-// Add user properties:
-    // Database version
-    // Screen resolution
 // Add analytics disabling settings
 // Add ads at end of lesson
 
@@ -39,6 +39,7 @@ import etiennedesticourt.makurajapanese.Analytics.Logger;
 // Implement Construction fragment
 // Beautify 3 fragments
 // Handle touch event + scrolling issue
+// Clean last minute demo shit
 
 
 public class MainActivity extends AppCompatActivity {
@@ -61,7 +62,18 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
         //pager.setCurrentItem(1);
 
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
         FirebaseLogger.INSTANCE.setContext(this);
+        FirebaseLogger.INSTANCE.setUserProperty(UserProperty.DATABASE_VERSION,
+                String.valueOf(CourseDbHelper.DATABASE_VERSION));
+        FirebaseLogger.INSTANCE.setUserProperty(UserProperty.SCREEN_RESOLUTION_X,
+                String.valueOf(width));
+        FirebaseLogger.INSTANCE.setUserProperty(UserProperty.SCREEN_RESOLUTION_Y,
+                String.valueOf(height));
 
         //getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);

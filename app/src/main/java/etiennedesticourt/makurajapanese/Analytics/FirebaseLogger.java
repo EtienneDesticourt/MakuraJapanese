@@ -14,6 +14,10 @@ public enum FirebaseLogger implements Logger{
         firebaseAnalytics = FirebaseAnalytics.getInstance(context);
     }
 
+    public void setUserProperty(String name, String value) {
+        firebaseAnalytics.setUserProperty(name, value);
+    }
+
     public void logSkillOpenedEvent(int id) {
         Bundle bundle = new Bundle();
         bundle.putInt(Param.SKILL_ID, id);
