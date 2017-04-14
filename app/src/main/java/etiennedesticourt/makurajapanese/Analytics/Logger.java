@@ -38,7 +38,7 @@ public interface Logger {
 
     void logHiraganaShownEvent(int lessonId, int questionId);
 
-    void logScreenTouchedEvent(String activityName, int x, int y);
+    void logScreenTouchedEvent(String activityName, int x, int y, boolean portrait_orientation);
 
     void logScreenRotatedEvent(String activityName, String orientation);
 }

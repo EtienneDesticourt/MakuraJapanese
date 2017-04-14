@@ -121,11 +121,12 @@ public enum FirebaseLogger implements Logger{
         firebaseAnalytics.logEvent(Event.HIRAGANA_SHOWN, bundle);
     }
 
-    public void logScreenTouchedEvent(String activityName, int x, int y) {
+    public void logScreenTouchedEvent(String activityName, int x, int y, boolean portrait_orientation) {
         Bundle bundle = new Bundle();
         bundle.putString(Param.ACTIVITY_NAME, activityName);
         bundle.putInt(Param.LOCATION_X, x);
         bundle.putInt(Param.LOCATION_Y, y);
+        bundle.putBoolean(Param.ORIENTATION, portrait_orientation);
         firebaseAnalytics.logEvent(Event.SCREEN_TOUCHED, bundle);
     }
 

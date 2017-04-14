@@ -1,10 +1,12 @@
 package etiennedesticourt.makurajapanese;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class SkillActivity extends AppCompatActivity {
     private FragmentPagerAdapter adapter;
     private ViewPager pager;
     private Skill skill;
+    private boolean wasCompleted;
     private Logger logger = FirebaseLogger.INSTANCE;
     private SimpleTimer timer;
 
@@ -40,6 +43,8 @@ public class SkillActivity extends AppCompatActivity {
         CourseDbHelper dbHelper = CourseDbHelper.getInstance(this);
         CourseFactory factory = new CourseFactory(dbHelper);
         skill = factory.buildSkill(skillName); //TODO: Add error handling
+        wasCompleted = skill.isCompleted();
+
 
         // Get corresponding picture
         int backgroundId = getResources().getIdentifier(
@@ -63,6 +68,10 @@ public class SkillActivity extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
+        if (!wasCompleted && skill.isCompleted()) {
+            logger.logSkillCompletedEvent(skill.getId());
+            wasCompleted = true;
+        }
         logger.logSkillOpenedEvent(skill.getId());
         timer = SimpleTimer.start();
     }
@@ -84,5 +93,13 @@ public class SkillActivity extends AppCompatActivity {
         intent.putExtra(QuestionActivity.INTENT_LESSON_TAG, lesson);
         intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         startActivity(intent);
+    }
+
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == event.ACTION_DOWN) {
+            boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+            logger.logScreenTouchedEvent("SkillActivity", (int) event.getX(), (int) event.getY(), portrait);
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
