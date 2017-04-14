@@ -55,11 +55,11 @@ public class QuestionActivity extends AppCompatActivity {
         lesson = (Lesson) intent.getSerializableExtra(INTENT_LESSON_TAG);
         questions = new ArrayList<>(lesson.getQuestions());
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question);
         TextView sentence = (TextView) binding.getRoot().findViewById(R.id.question);
         sentence.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         displayQuestion();
+
         lessonTimer = SimpleTimer.start();
         logger.logLessonStartedEvent(lesson.getId());
     }
@@ -171,7 +171,8 @@ public class QuestionActivity extends AppCompatActivity {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (answerFragment != null) {
-            ft.remove(answerFragment);
+            ft.remove(answerFragment).commit();
+            ft = getFragmentManager().beginTransaction();
         }
         if (question.getType() == QuestionType.WORD_DEFINITION) {
             answerFragment = new DefinitionFragment();

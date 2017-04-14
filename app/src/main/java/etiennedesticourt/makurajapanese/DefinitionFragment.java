@@ -81,5 +81,10 @@ public class DefinitionFragment extends AnswerFragment {
         }
         image.setImageResource(resourceId);
     }
+
+    public void onDestroy() {
+        super.onDestroy();
+        System.gc();
+    }
 }
 

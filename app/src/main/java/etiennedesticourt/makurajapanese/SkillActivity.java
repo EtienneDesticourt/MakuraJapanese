@@ -74,7 +74,7 @@ public class SkillActivity extends AppCompatActivity {
             wasCompleted = true;
         }
         */
-        logger.logSkillOpenedEvent(skill.getId());
+        logger.logSkillOpenedEvent(skill.getId()); //TODO: Fix issue here, appears when question activity crashes
         timer = SimpleTimer.start();
     }
 

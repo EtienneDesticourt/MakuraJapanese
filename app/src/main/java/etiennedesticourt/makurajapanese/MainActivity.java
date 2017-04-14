@@ -24,9 +24,6 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 //Finish lessons
 
 // Add validation sound
-
-// Fix memory issue in setOptionImage
-
 // Add ads at end of lesson
 
 //FULL RELEASE:
@@ -37,6 +34,7 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 // Handle touch event + scrolling issue
 // Clean last minute demo shit (put all analytics widget shit in analytics package)
 // Fix finished lesson quick validation bug (it brings back question activity to the front despite the finish)
+// Fix memory issue in setOptionImage (temporary fix for demo, solve long term).
 
 
 public class MainActivity extends AppCompatActivity {
