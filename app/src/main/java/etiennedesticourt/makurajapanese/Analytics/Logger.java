@@ -40,5 +40,9 @@ public interface Logger {
 
     void logScreenTouchedEvent(String activityName, int x, int y, boolean portrait_orientation);
 
+    void logAnalyticsReenabled();
+
+    void logAnalyticsDisabled();
+
     void logScreenRotatedEvent(String activityName, String orientation);
 }

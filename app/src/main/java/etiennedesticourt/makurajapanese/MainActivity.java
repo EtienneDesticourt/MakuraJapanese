@@ -1,5 +1,6 @@
 package etiennedesticourt.makurajapanese;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ListView;
 
 import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
 import etiennedesticourt.makurajapanese.Analytics.Logger;
@@ -27,7 +29,6 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 // Fix memory issue in setOptionImage
 // Fix finished lesson quick validation bug
 
-// Add analytics disabling settings
 // Add ads at end of lesson
 
 //FULL RELEASE:
@@ -36,16 +37,18 @@ import etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
 // Implement Construction fragment
 // Beautify 3 fragments
 // Handle touch event + scrolling issue
-// Clean last minute demo shit
+// Clean last minute demo shit (put all analytics widget shit in analytics package)
 
 
 public class MainActivity extends AppCompatActivity {
     private final String PREFS_NAME = "MyPrefsFile";
     private final String PREFS_FIRST_OPEN = "first_open";
+    private final String PREFS_ANALYTICS_ENABLED = "analytics_enabled";
     private FragmentPagerAdapter adapter;
     private ViewPager pager;
     public static String PACKAGE_NAME;
     private Logger logger = FirebaseLogger.INSTANCE;
+    private boolean disableAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +63,23 @@ public class MainActivity extends AppCompatActivity {
         //pager.setCurrentItem(1);
 
 
+        FirebaseLogger.INSTANCE.setContext(this);
+        //getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getBoolean(PREFS_FIRST_OPEN, true)) {
+            showAnalyticsInfo();
+            FirebaseLogger.INSTANCE.setAnalyticsCollectionEnabled(true);
+            settings.edit().putBoolean(PREFS_ANALYTICS_ENABLED, true).commit();
+            settings.edit().putBoolean(PREFS_FIRST_OPEN, false).commit();
+        }
+        if (!settings.getBoolean(PREFS_ANALYTICS_ENABLED, false)) {
+            FirebaseLogger.INSTANCE.setAnalyticsCollectionEnabled(false);
+        }
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        FirebaseLogger.INSTANCE.setContext(this);
         FirebaseLogger.INSTANCE.setUserProperty(UserProperty.DATABASE_VERSION,
                 String.valueOf(CourseDbHelper.DATABASE_VERSION));
         FirebaseLogger.INSTANCE.setUserProperty(UserProperty.SCREEN_RESOLUTION_X,
@@ -72,21 +87,60 @@ public class MainActivity extends AppCompatActivity {
         FirebaseLogger.INSTANCE.setUserProperty(UserProperty.SCREEN_RESOLUTION_Y,
                 String.valueOf(height));
 
-        //getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
+    }
+
+    public void showSettings(View v) {
+        CharSequence[] items = {"Disable analytics."};
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Settings")
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        disableAnalytics = !disableAnalytics;
+                        ((AlertDialog)dialog).getListView().setItemChecked(0, disableAnalytics);
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (disableAnalytics) {
+                            disableAnalytics();
+                        }
+                        else {
+                            enableAnalytics();
+                        }
+                        disableAnalytics = false;
+                    }
+                })
+                .show();
+    }
+
+    public void disableAnalytics() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        if (settings.getBoolean(PREFS_FIRST_OPEN, true)) {
-            showAnalyticsInfo();
-            settings.edit().putBoolean(PREFS_FIRST_OPEN, false).commit();
+        if (settings.getBoolean(PREFS_ANALYTICS_ENABLED, false)) {
+            logger.logAnalyticsDisabled();
+            settings.edit().putBoolean(PREFS_ANALYTICS_ENABLED, false).commit();
+            FirebaseLogger.INSTANCE.setAnalyticsCollectionEnabled(false);
         }
     }
 
-    public void showAnalyticsInfo() {new AlertDialog.Builder(this)
+    public void enableAnalytics() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (!settings.getBoolean(PREFS_ANALYTICS_ENABLED, false)) {
+            settings.edit().putBoolean(PREFS_ANALYTICS_ENABLED, true).commit();
+            FirebaseLogger.INSTANCE.setAnalyticsCollectionEnabled(true);
+            logger.logAnalyticsReenabled();
+        }
+    }
+
+    public void showAnalyticsInfo() {
+        new AlertDialog.Builder(this)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle("App Info")
             .setMessage("This app uses analytics to improve itself by logging events such as how long a question or lesson takes to be completed.\n No sensitive information is logged.\n All information is anonymous.\n Analytics can be disabled in the settings.")
             .setPositiveButton("OK", null)
             .show();
-
     }
 
     public void onSkillClick(View v) {

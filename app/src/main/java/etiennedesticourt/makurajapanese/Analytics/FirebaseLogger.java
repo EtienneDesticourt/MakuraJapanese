@@ -18,6 +18,10 @@ public enum FirebaseLogger implements Logger{
         firebaseAnalytics.setUserProperty(name, value);
     }
 
+    public void setAnalyticsCollectionEnabled(boolean enabled) {
+        firebaseAnalytics.setAnalyticsCollectionEnabled(enabled);
+    }
+
     public void logSkillOpenedEvent(int id) {
         Bundle bundle = new Bundle();
         bundle.putInt(Param.SKILL_ID, id);
@@ -139,5 +143,13 @@ public enum FirebaseLogger implements Logger{
         bundle.putString(Param.ACTIVITY_NAME, activityName);
         bundle.putString(Param.ORIENTATION, orientation);
         firebaseAnalytics.logEvent(Event.SCREEN_ROTATED, bundle);
+    }
+
+    public void logAnalyticsDisabled() {
+        firebaseAnalytics.logEvent(Event.ANALYTICS_DISABLED, null);
+    }
+
+    public void logAnalyticsReenabled() {
+        firebaseAnalytics.logEvent(Event.ANALYTICS_ENABLED, null);
     }
 }

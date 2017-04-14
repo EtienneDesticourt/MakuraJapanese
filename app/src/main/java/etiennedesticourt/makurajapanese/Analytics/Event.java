@@ -16,4 +16,6 @@ public class Event {
     public static final String HIRAGANA_SHOWN = "hiragana_shown";
     public static final String SCREEN_TOUCHED = "screen_touched";
     public static final String SCREEN_ROTATED = "screen_rotated";
+    public static final String ANALYTICS_DISABLED = "analytics_disabled";
+    public static final String ANALYTICS_ENABLED = "analytics_enabled";
 }
