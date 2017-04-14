@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 
+import static java.lang.Math.ceil;
+
 public class Question implements Serializable{
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private QuestionType type;
@@ -38,7 +40,7 @@ public class Question implements Serializable{
     }
 
     public void increaseInterval() {
-        interval += Math.ceil( interval / 2 );
+        interval += ceil( interval / 2. );
         nextReview = calcNextReview();
     }
 
@@ -48,11 +50,18 @@ public class Question implements Serializable{
         return cal.getTime();
     }
 
+    public long getMilliUntilNextReview() {
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        long diff = nextReview.getTime() - today.getTime();
+        return diff;
+    }
+
     public int getDaysUntilNextReview() {
         Calendar cal = Calendar.getInstance();
         Date today = cal.getTime();
-        long diff = today.getTime() - nextReview.getTime();
-        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        long diff = nextReview.getTime() - today.getTime();
+        return (int) (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
     }
 
     public void increaseAttempts() {
@@ -80,7 +89,7 @@ public class Question implements Serializable{
     }
 
     public boolean isOverdue() {
-        return getDaysUntilNextReview() <= 0;
+        return getMilliUntilNextReview() <= 0;
     }
 
     public String getExplanation() {

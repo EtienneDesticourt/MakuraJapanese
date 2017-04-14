@@ -18,7 +18,6 @@ import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
 // Add validation sound
 // Fix question validation bug
 // Fix memory issue in setOptionImage
-// Fix finished skill bug
 // Fix finished lesson quick validation bug
 
 // Add analytics

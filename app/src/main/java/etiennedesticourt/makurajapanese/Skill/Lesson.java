@@ -38,6 +38,9 @@ public class Lesson implements Serializable{
         if (masteryLevel == 5 && percentOverdue > 0) {
             masteryLevel = 4;
         }
+        if (completed && masteryLevel == 0) {
+            masteryLevel = 1;
+        }
         return  masteryLevel;
     }
 
