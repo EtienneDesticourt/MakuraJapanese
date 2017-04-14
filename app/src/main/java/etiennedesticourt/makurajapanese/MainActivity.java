@@ -1,6 +1,5 @@
 package etiennedesticourt.makurajapanese;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -12,8 +11,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
 import etiennedesticourt.makurajapanese.Analytics.Logger;

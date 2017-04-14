@@ -1,7 +1,5 @@
 package etiennedesticourt.makurajapanese.Skill;
 
-import android.databinding.BindingAdapter;
-
 import java.util.ArrayList;
 import java.util.Date;
 

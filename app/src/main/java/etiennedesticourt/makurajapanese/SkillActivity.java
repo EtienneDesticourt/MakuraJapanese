@@ -68,10 +68,12 @@ public class SkillActivity extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
+        /*
         if (!wasCompleted && skill.isCompleted()) {
             logger.logSkillCompletedEvent(skill.getId());
             wasCompleted = true;
         }
+        */
         logger.logSkillOpenedEvent(skill.getId());
         timer = SimpleTimer.start();
     }
