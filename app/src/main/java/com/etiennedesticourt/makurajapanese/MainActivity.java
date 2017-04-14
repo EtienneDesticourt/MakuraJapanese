@@ -12,12 +12,12 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ListView;
 
 import com.etiennedesticourt.makurajapanese.Analytics.FirebaseLogger;
 import com.etiennedesticourt.makurajapanese.Analytics.Logger;
 import com.etiennedesticourt.makurajapanese.Analytics.UserProperty;
 import com.etiennedesticourt.makurajapanese.SRS.CourseDbHelper;
+import com.google.android.gms.ads.MobileAds;
 
 //TODO:
 //DEMO :
@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         //pager.setCurrentItem(1);
 
 
+        // INITIALIZE ADMOB
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.admob_app_id));
+
+        // INITIALIZE ANALYTICS
         FirebaseLogger.INSTANCE.setContext(this.getApplicationContext());
         //getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -159,5 +163,12 @@ public class MainActivity extends AppCompatActivity {
             logger.logScreenTouchedEvent("MainActivity", (int) event.getX(), (int) event.getY(), portrait);
         }
         return super.dispatchTouchEvent(event);
+    }
+
+
+    public void startLessonEndActivity(View v) {
+        Intent intent = new Intent(this, LessonEndActivity.class);
+        //intent.putExtra(LessonEndActivity.INTENT_LESSON_TAG, lesson);
+        startActivity(intent);
     }
 }
