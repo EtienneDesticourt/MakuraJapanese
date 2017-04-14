@@ -1,5 +1,7 @@
 package etiennedesticourt.makurajapanese.Skill;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,7 +32,13 @@ public class Question implements Serializable{
     }
 
     public boolean answerIsCorrect(String givenAnswer) {
-        double similarity = StringUtils.getJaroWinklerDistance(answer, givenAnswer);
+        String lowerGivenAnswer = givenAnswer.replace("I'm", "I am").toLowerCase();
+        String lowerAnswer = answer.toLowerCase();
+        double similarity = StringUtils.getJaroWinklerDistance(lowerAnswer, lowerGivenAnswer);
+        /*
+        Log.d("SIMILARITY", givenAnswer);
+        Log.d("SIMILARITY", answer);
+        Log.d("SIMILARITY", String.valueOf(similarity));*/
         return similarity >= 0.9;
     }
 
