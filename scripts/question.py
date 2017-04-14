@@ -1,5 +1,6 @@
 DEFINITION = "definition"
 TRANSCRIPTION = "transcription"
+TRANSLATION = "translation"
 
 
 class Question(object):

@@ -1,0 +1,11 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+app/src/main/res
+app/src/main/res/layout/activity_main.xml
+scripts/sound_fetcher.py

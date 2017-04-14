@@ -1,19 +1,20 @@
 import random
 import question
-import word
+import word as word_module
 
 
 class LessonGenerator(object):
     "Tool to generate full-fledged lessons from a list of words."
 
-    def __init__(self, lid, lesson_words, known_words=[]):
+    def __init__(self, lid, lesson_words, sentences, known_words=[]):
         self.words = lesson_words
+        self.sentences = sentences
         self.id = lid
 
     def pick_definition_options(self, word):
         if len(self.words) < 4:
             options = self.words[:]
-            options += [word.EMPTY] * (4 - len(options))
+            options += [word_module.EMPTY] * (4 - len(options))
         else:
             options = self.words[:4]
 
@@ -37,6 +38,17 @@ class LessonGenerator(object):
         options = None
         return question.Question(qtype, question_text, answer, options, self.id)
 
+    def generate_translation_question(self, sentence, backward=False):
+        qtype = question.TRANSLATION
+        if backward:
+            question_text = sentence.japanese
+            answer = sentence.english
+        else:
+            question_text = sentence.english
+            answer = sentence.japanese
+        options = None
+        return question.Question(qtype, question_text, answer, options, self.id)
+
     def to_sql(self):
         sql_values = []
         for word in self.words:
@@ -46,6 +58,15 @@ class LessonGenerator(object):
 
             transcription = self.generate_transcription_question(word)
             qsql = transcription.to_sql()
+            sql_values.append(qsql)
+
+        for sentence in self.sentences:
+            translation = self.generate_translation_question(sentence)
+            qsql = translation.to_sql()
+            sql_values.append(qsql)
+
+            translation = self.generate_translation_question(sentence, backward=True)
+            qsql = translation.to_sql()
             sql_values.append(qsql)
 
         return ",\n".join(sql_values)
