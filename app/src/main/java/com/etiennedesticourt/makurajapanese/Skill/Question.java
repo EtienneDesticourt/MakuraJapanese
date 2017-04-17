@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import static java.lang.Math.ceil;
 
 public class Question implements Serializable{
-    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private QuestionType type;
     private int id;
     private String sentence;
